@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Assistant</title>
+</head>
+<body>
+
+<h2>Voice Assistant 🎤</h2>
+<button onclick="startListening()">Speak</button>
+
+<p id="output"></p>
+
+<script>
+function startListening() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        let text = event.results[0][0].transcript;
+        document.getElementById("output").innerText = "You said: " + text;
+
+        fetch(`/ask/${text}`)
+        .then(res => res.json())
+        .then(data => {
+            let response = data.response;
+
+            let speech = new SpeechSynthesisUtterance(response);
+            speechSynthesis.speak(speech);
+        });
+    }
+}
+</script>
+
+</body>
+</html>
