@@ -19,7 +19,7 @@ function startListening() {
         let text = event.results[0][0].transcript;
         document.getElementById("output").innerText = "You said: " + text;
 
-        fetch(`/ask/${text}`)
+         fetch(`/ask/${encodeURIComponent(text)}`)
         .then(res => res.json())
         .then(data => {
             let response = data.response;
